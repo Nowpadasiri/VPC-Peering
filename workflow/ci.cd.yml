@@ -1,0 +1,22 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: linux-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run scripts
+        run: |
+          chmod +x scripts/*.sh
+          ./scripts/vpc_peering.sh
+          ./scripts/bastion_setup.sh
+          ./scripts/db_migration.sh
+          ./scripts/slack_notify.sh
